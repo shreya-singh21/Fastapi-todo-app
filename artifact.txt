@@ -1,0 +1,12 @@
+pod
+deployment
+replicaset
+liveness prob
+readiness prob
+rolling update
+resource utilization
+volume pv - ek memory bna rahe hai, 
+       pvc - memory kitna use krna chahte hai
+service - nodeport, clusterip
+cronjob -pod hai/deployment ye banta hai fir kaam krne ke baad delete ho jata hai. cronjob to create dockerimage which will run hello world to 10000 times. 
+it is like deployment manifest file.
