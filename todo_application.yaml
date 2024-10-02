@@ -5,7 +5,7 @@ metadata:
   labels:
     app: fastapi-todo
 spec:
-  replicas: 3                          # Number of pod replicas
+  replicas: 1                         # Number of pod replicas
   selector:
     matchLabels:
       app: fastapi-todo
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: fastapi-container
-        image: fastapi-todo-app:latest   # Use your Docker image name and tag here
+        image: shreyasingh21/fastapi-todo-app:latest   # Use your Docker image name and tag here
         ports:
         - containerPort: 8000            # Port that the FastAPI app is exposed on
         resources:
