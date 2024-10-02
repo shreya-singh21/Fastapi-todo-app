@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-todo-service
+  labels:
+    app: fastapi-todo
+spec:
+  type: NodePort  # This will expose the service on a NodePort
+  selector:
+    app: fastapi-todo
+  ports:
+  - port: 8000            # Port exposed by the FastAPI application in the pod
+    targetPort: 8000      # ContainerPort inside the pod
+    nodePort: 30008       # NodePort on which the service will be accessible (must be between 30000-32767)
+    protocol: TCP

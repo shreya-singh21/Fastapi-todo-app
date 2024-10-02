@@ -5,7 +5,12 @@ metadata:
   labels:
     app: fastapi-todo
 spec:
-  replicas: 3                          # Number of pod replicas
+  replicas: 1  
+  strategy:
+    type: RollingUpdate  # This is the default strategy
+    rollingUpdate:
+      maxSurge: 1  # Number of extra pods to bring up during update
+      maxUnavailable: 0  # Ensure no pods are terminated until the new one is running                       # Number of pod replicas
   selector:
     matchLabels:
       app: fastapi-todo
@@ -16,7 +21,7 @@ spec:
     spec:
       containers:
       - name: fastapi-container
-        image: fastapi-todo-app:latest   # Use your Docker image name and tag here
+        image: shreyasingh21/fastapi-todo-app:latest   # Use your Docker image name and tag here
         ports:
         - containerPort: 8000            # Port that the FastAPI app is exposed on
         resources:
@@ -26,3 +31,25 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+        livenessProbe:
+          httpGet:
+            path: /           # Define a health check endpoint in your FastAPI app (e.g., /healthz)
+            port: 8000
+          initialDelaySeconds: 5       # Time to wait before starting liveness checks
+          periodSeconds: 10            # Frequency of liveness checks
+          failureThreshold: 3          # Number of failed attempts before considering the container unhealthy
+
+        readinessProbe:
+          httpGet:
+            path: /         # Define a readiness check endpoint in your FastAPI app (e.g., /readiness)
+            port: 8000
+          initialDelaySeconds: 5      # Time to wait before starting readiness checks
+          periodSeconds: 5            # Frequency of readiness checks
+          failureThreshold: 3         # Number of failed attempts before considering the container unavailable    
+        volumeMounts:
+        - mountPath: /data  # Path where the volume will be mounted inside the container
+          name: fastapi-volume  # Name of the volume
+      volumes:
+      - name: fastapi-volume
+        persistentVolumeClaim:
+          claimName: fastapi-pvc  # Reference to the PVC created earlier
