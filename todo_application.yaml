@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fastapi-todo-app
+  labels:
+    app: fastapi-todo
+spec:
+  containers:
+  - name: fastapi-container
+    image: fastapi-todo-app:latest   # Use your Docker image name and tag here
+    ports:
+    - containerPort: 8000            # Port that the FastAPI app is exposed on
+    resources:
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+      requests:
+        memory: "256Mi"
+        cpu: "250m"
